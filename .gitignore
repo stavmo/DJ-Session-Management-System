@@ -1,0 +1,54 @@
+# ===========================
+# BUILD ARTIFACTS (REMOVE!)
+# ===========================
+
+# Output binaries and object files
+bin/
+*.o
+*.a
+*.so
+*.out
+*.exe
+*.obj
+
+# CMake (if ever used)
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# ===========================
+# EDITOR / IDE FILES
+# ===========================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# VSCode local history / backups
+.history/
+*.tmp
+
+# ===========================
+# SYSTEM / OS FILES
+# ===========================
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Linux
+*.swp
+*.swo
+
+# ===========================
+# PROJECT-SPECIFIC
+# ===========================
+
+# Hide dump files created by assignment testing
+*.log
+*.cache
