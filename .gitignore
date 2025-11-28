@@ -22,6 +22,7 @@ Makefile
 # EDITOR / IDE FILES
 # ===========================
 
+not_active/
 # VS Code
 .vscode/
 *.code-workspace
