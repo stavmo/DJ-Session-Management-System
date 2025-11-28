@@ -16,6 +16,38 @@ DJLibraryService::DJLibraryService(const Playlist& playlist)
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>& library_tracks) {
     //Todo: Implement buildLibrary method
     std::cout << "TODO: Implement DJLibraryService::buildLibrary method\n"<< library_tracks.size() << " tracks to be loaded into library.\n";
+    int count = 0;
+    
+    for(const SessionConfig::TrackInfo& track_info : library_tracks){
+
+        ///ADDED HERE!!!!
+        AudioTrack* t = nullptr;
+        if(track_info.type == "MP3"){
+            t = new MP3Track(
+            track_info.title, 
+            track_info.artists, 
+            track_info.duration_seconds, 
+            track_info.bpm, 
+            track_info.extra_param1,
+            track_info.extra_param2!=0);
+            std::cout << "MP3Track created: " << track_info.extra_param1 << " kbps" << std::endl;
+
+        }
+        else if(track_info.type == "WAV"){
+            t = new WAVTrack(
+            track_info.title, 
+            track_info.artists, 
+            track_info.duration_seconds, 
+            track_info.bpm, 
+            track_info.extra_param1,
+            track_info.extra_param2);
+
+            std::cout << "WAVTrack created: " << track_info.extra_param1 << " Hz/ " << track_info.extra_param2 << " bit "<< std::endl;
+        }
+        library.push_back(t);
+        count++;
+    } 
+    std::cout << "[INFO] Track library built: " << count << " tracks loaded " << std::endl;
 }
 
 /**
@@ -54,21 +86,83 @@ Playlist& DJLibraryService::getPlaylist() {
  */
 AudioTrack* DJLibraryService::findTrack(const std::string& track_title) {
     // Your implementation here
-    return nullptr; // Placeholder
+    //return nullptr; // Placeholder
+
+
+    ////ADDED HERE!!!!!
+    return playlist.find_track(track_title);
+
 }
 
 void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name, 
                                                const std::vector<int>& track_indices) {
     // Your implementation here
     // For now, add a placeholder to fix the linker error
-    (void)playlist_name;  // Suppress unused parameter warning
-    (void)track_indices;  // Suppress unused parameter warning
+    //(void)playlist_name;  // Suppress unused parameter warning
+    //(void)track_indices;  // Suppress unused parameter warning
+
+    ///ADDED HERE!!!!
+    std::cout << "[INFO] Loading playlist: " << playlist_name << std::endl;
+    
+    playlist = Playlist(playlist_name);
+    int count=0;
+
+    for(int index : track_indices){
+        if(index < 1 || index > library.size()){
+            std::cout << "[WARNING] Invalid track index: " << index << std::endl;
+        }
+        else{
+            AudioTrack* track = library[index-1];
+            PointerWrapper<AudioTrack> clonedTrack = track->clone();
+
+            if(!clonedTrack){
+                std::cerr << "[ERROR] Track: " << track->get_title() << " failed to clone\n";
+            }
+
+            else{
+                AudioTrack* clonedRawPtr = clonedTrack.release();
+                clonedRawPtr->load();
+                clonedRawPtr->analyze_beatgrid();
+
+                playlist.add_track(clonedRawPtr);
+                std::cout << "Added " << track->get_title() << " to playlist " << playlist_name << std::endl;
+                count++;
+            }
+        }
+        
+    }
+    
+    std::cout << "[INFO] Playlist loaded: " << playlist_name << " (" << count << " tracks)" << std::endl;
 }
 /**
  * TODO: Implement getTrackTitles method
  * @return Vector of track titles in the playlist
  */
 std::vector<std::string> DJLibraryService::getTrackTitles() const {
-    // Your implementation here
-    return std::vector<std::string>(); // Placeholder
+    
+    //return std::vector<std::string>(); // Placeholder
+
+
+    ////ADDED HERE!!!!
+    std::vector<std::string> titles;
+
+    std::vector<AudioTrack*> tracks = playlist.getTracks();
+
+    for (AudioTrack* track : tracks) {
+        if (track) {
+            titles.push_back(track->get_title());
+        }
+    }
+
+    return titles;
+
+}
+
+
+/// ADDED HERE!!!! (NOT SURE)
+DJLibraryService::~DJLibraryService() {
+    for (AudioTrack* track : library) {
+        delete track;
+    }
+    library.clear();
 }

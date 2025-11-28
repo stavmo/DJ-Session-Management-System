@@ -17,6 +17,8 @@ public:
     DJLibraryService(): playlist(), library(){}
     //default; TOOK DOWN
 
+    ~DJLibraryService(); //ADDED HEREEEE!!!
+
     /**
      * @brief Build the track library from parsed config data
      * @param library_tracks Vector of track info from config
