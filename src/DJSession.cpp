@@ -9,7 +9,23 @@
 
 
 DJSession::DJSession(const std::string& name, bool play_all)
-    : session_name(name), play_all(play_all) {
+    : session_name(name),  library_service(),
+
+    controller_service(),
+
+    mixing_service(),
+
+    config_manager(),
+
+    session_config(),
+
+    track_titles(),
+
+    play_all(play_all),
+
+    stats(){
+
+        //play_all(play_all) TOOK DOWN
     std::cout << "DJ Session System initialized: " << session_name << std::endl;
 }
 
