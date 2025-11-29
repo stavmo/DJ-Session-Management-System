@@ -18,6 +18,7 @@ class PointerWrapper {
 private:
     T* ptr;  // Raw pointer to the managed object
 
+
 public:
     // ========== CONSTRUCTION AND DESTRUCTION ==========
 
@@ -39,7 +40,7 @@ public:
      */
     ~PointerWrapper() {
         //!!!!!! ADDED HERE
-        delete ptr;
+            delete ptr;
     }
     //=default;
 
@@ -64,7 +65,7 @@ public:
      * HINT: How should ownership transfer from one wrapper to another?
      * What should happen to the source wrapper after the move?
      */
-    PointerWrapper(PointerWrapper&& other) noexcept
+    PointerWrapper(PointerWrapper&& other) noexcept 
     //!!!!!! ADDED HERE 
     :ptr(other.ptr)
     {
@@ -80,14 +81,14 @@ public:
        
        //!!!!!! ADDED HERE
         if(this != &other){
-            delete ptr;
+                delete ptr;
 
-            ptr = other.ptr;
-            other.ptr = nullptr;
+                ptr = other.ptr;
+                other.ptr = nullptr;
        }
 
-        return *this;
-    }
+                return *this;
+        }
 
     // ========== ACCESS OPERATIONS ==========
 
@@ -96,15 +97,12 @@ public:
      * HINT: How do you access the object that the wrapper points to? Is this operation implementation complete?
      * @throws std::runtime_error if ptr is null
      */
-
     T& operator*() const {
-
-        //!!!!!! ADDED HERE
-        if (ptr == nullptr){
-            throw std::runtime_error("can't access object using a null pointer");
+        if (!*this) {
+            throw std::runtime_error("[ERROR] Can't access object using a null pointer");
         }
         return *ptr;
-    };
+    }
 
     /**
      * TODO: Implement arrow operator
@@ -112,11 +110,8 @@ public:
      * What safety checks should you perform?
      */
     T* operator->() const {
-        //return nullptr;
-
-        //!!!!!! ADDED HERE
-        if (ptr == nullptr){
-            throw std::runtime_error("can't use -> on null pointer");
+        if (!*this) {
+            throw std::runtime_error("[ERROR] Can't access object using a null pointer");
         }
         return ptr;
     }
@@ -128,11 +123,8 @@ public:
      * @throws std::runtime_error if ptr is null
      */
     T* get() const {
-        //return nullptr; // Placeholder
-
-        //!!!!!! ADDED HERE
-        if (ptr == nullptr){
-            throw std::runtime_error("can't access raw null pointer");
+        if (!*this) {
+            throw std::runtime_error("[ERROR] Can't access raw null pointer");
         }
         return ptr;
     }
@@ -145,12 +137,12 @@ public:
      * Should the wrapper still own the pointer after calling release()?
      */
     T* release() {
-        //return nullptr;
-
-        //!!!!!! ADDED HERE
-        T* temp = ptr;
-        ptr = nullptr;
-        return temp;
+        if (*this) {
+            T* temp = ptr;
+            ptr = nullptr;
+            return temp;
+        }
+        return nullptr;
     }
 
     /**
@@ -161,11 +153,10 @@ public:
     void reset(T* new_ptr = nullptr) {
 
         //!!!!!! ADDED HERE
-        if(ptr != new_ptr){
+        if (ptr != new_ptr) {
             delete ptr;
             ptr = new_ptr;
         }
-
     }
 
     // ========== UTILITY FUNCTIONS ==========
@@ -176,11 +167,7 @@ public:
      * Why might the explicit keyword be important here?
      */
     explicit operator bool() const {
-        //return false; //placeholder
-
-
-        //!!!!!! ADDED HERE
-        return ptr != nullptr;;
+        return ptr != nullptr;
     }
 
     /**
