@@ -6,7 +6,7 @@
 AudioTrack::AudioTrack(const std::string& title, const std::vector<std::string>& artists, 
                       int duration, int bpm, size_t waveform_samples)
     : title(title), artists(artists), duration_seconds(duration), bpm(bpm), 
-    waveform_data(nullptr), waveform_size(waveform_samples) {
+      waveform_data(nullptr), waveform_size(waveform_samples) {
 
     // Allocate memory for waveform analysis
     waveform_data = new double[waveform_size];
@@ -35,10 +35,8 @@ AudioTrack::~AudioTrack() {
     #ifdef DEBUG
     std::cout << "AudioTrack destructor called for: " << title << std::endl;
     #endif
-    // Your code here...
-
-    //!!!!!! ADDED HERE
     delete[] waveform_data;
+    
 }
 
 AudioTrack::AudioTrack(const AudioTrack& other)
@@ -47,24 +45,19 @@ AudioTrack::AudioTrack(const AudioTrack& other)
     #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
     #endif
-    // Your code here...
 
-    //!!!!!! ADDED HERE
     title = other.title;
     artists = other.artists;
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
-    waveform_size = other.waveform_size; 
-    
-    if(other.waveform_data != nullptr){
-
+    waveform_size = other.waveform_size;
+    if(other.waveform_data) {
         waveform_data = new double[waveform_size];
-        for (size_t i = 0; i < waveform_size; ++i) {
-        waveform_data[i] = other.waveform_data[i];
-    }
-    }
-    
-    else{
+
+        //deep copy the waveform_data array
+        other.get_waveform_copy(waveform_data, waveform_size);
+
+    }     else{
         waveform_data = nullptr;
     }
 
@@ -75,58 +68,43 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     #ifdef DEBUG
     std::cout << "AudioTrack copy assignment called for: " << other.title << std::endl;
     #endif
-    // Your code here...
-
-
-    //!!!!!! ADDED HERE
-    if(this == &other){
-        return *this;
-    }
+    
+    if (this != &other) {   //check for self-assignment
         
+    //clean-up existing data
     delete[] waveform_data;
     waveform_data = nullptr;
+    
 
+    //copy all fields
     title = other.title;
     artists = other.artists;
     duration_seconds = other.duration_seconds;
     bpm = other.bpm;
     waveform_size = other.waveform_size; 
     
-    if(other.waveform_data != nullptr){
-
+    if(other.waveform_data){
         waveform_data = new double[waveform_size];
-        for (size_t i = 0; i < waveform_size; ++i) {
-        waveform_data[i] = other.waveform_data[i];
-        }
-    }
+        //deep copy the waveform_data array
+        other.get_waveform_copy(waveform_data, waveform_size);
     
-    else{
-        waveform_data = nullptr;
-    }
-
+    } 
     return *this;
+    }
 }
 
 AudioTrack::AudioTrack(AudioTrack&& other) noexcept 
-
-    //!!!!!! ADDED HERE
-      :title(other.title),
-      artists(other.artists),
-      duration_seconds(other.duration_seconds),
-      bpm(other.bpm),
-      waveform_data(other.waveform_data),
-      waveform_size(other.waveform_size)
-
-
-{
+    : title(other.title),
+     artists(other.artists),
+    duration_seconds(other.duration_seconds),
+    bpm(other.bpm),
+    waveform_data(other.waveform_data),
+    waveform_size(other.waveform_size)
+    {
     // TODO: Implement the move constructor
     #ifdef DEBUG
     std::cout << "AudioTrack move constructor called for: " << other.title << std::endl;
     #endif
-    // Your code here...
-
-    //!!!!!! ADDED HERE
-    //turn other properties to null
     other.waveform_data = nullptr;
     other.waveform_size = 0;
     other.duration_seconds = 0;
@@ -141,14 +119,11 @@ AudioTrack& AudioTrack::operator=(AudioTrack&& other) noexcept {
     #endif
     // Your code here...
 
-    //!!!!!! ADDED HERE
     if(this != &other){
         //clearing this
         delete[] waveform_data;
         waveform_data = nullptr;
-
-        //title = std::move(other.title);
-        //artists = std::move(other.artists);
+        
         title = other.title;
         artists = other.artists;
         duration_seconds = other.duration_seconds;

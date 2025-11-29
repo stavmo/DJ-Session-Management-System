@@ -107,4 +107,5 @@ public:
     int get_bpm() const { return bpm; }
     int get_duration() const { return duration_seconds; }
     std::vector<std::string> get_artists() const { return artists; }
+    size_t get_size() const { return(waveform_size);}
 };
