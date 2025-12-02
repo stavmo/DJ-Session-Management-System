@@ -11,6 +11,12 @@ MixingEngineService::MixingEngineService()
     //active_deck(0) TOOK DOWN
 {
     // Your implementation here
+
+    decks[0] = nullptr;
+    decks[1] = nullptr;
+    active_deck = 0;
+
+    std::cout << "[MixingEngineService] Initialized with 2 empty decks" << std::endl;
 }
 
 /**
@@ -18,6 +24,11 @@ MixingEngineService::MixingEngineService()
  */
 MixingEngineService::~MixingEngineService() {
     // Your implementation here
+    std::cout << "[MixingEngineService] Cleaning up decks.... " << std::endl;
+    delete decks[0];
+    decks[0] = nullptr;
+    delete decks[1];
+    decks[1] = nullptr;
 }
 
 
@@ -28,7 +39,7 @@ MixingEngineService::~MixingEngineService() {
  */
 int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     // Your implementation here
-    return -1; // Placeholder
+    
 }
 
 /**
