@@ -101,6 +101,9 @@ public:
      * Function to get a copy of the waveform data
      */
     void get_waveform_copy(double* buffer, size_t buffer_size) const;
+
+    //Function to set BPM for BPM Synchronization
+    void set_bpm(int new_bpm) {bpm = new_bpm;} 
     
     // ========== ACCESSOR FUNCTIONS ==========
     std::string get_title() const { return title; }
@@ -108,4 +111,5 @@ public:
     int get_duration() const { return duration_seconds; }
     std::vector<std::string> get_artists() const { return artists; }
     size_t get_size() const { return(waveform_size);}
+
 };
