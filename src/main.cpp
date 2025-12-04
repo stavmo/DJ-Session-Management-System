@@ -157,6 +157,32 @@ void demonstrate_polymorphism() {
         std::cout << std::endl;
     }
 }
+
+void test_MixingEngineService() {
+    std::vector<std::unique_ptr<AudioTrack>> tracks;
+    AudioTrack* mp3 = new MP3Track("MP3 Example", {"Artist 1"}, 200, 110, 320);
+    AudioTrack* wav = new WAVTrack("WAV Example", {"Artist 2"}, 180, 130, 100, 16);
+ 
+    MixingEngineService* mix = new MixingEngineService();
+    mix->loadTrackToDeck(*mp3);
+    mix->displayDeckStatus();
+    mix->loadTrackToDeck(*wav);
+    mix->displayDeckStatus();
+
+    mix->set_auto_sync(true);
+    mix->set_bpm_tolerance(20);
+    mix->displayDeckStatus();
+    mix->loadTrackToDeck(*mp3);
+    mix->displayDeckStatus();
+
+    delete mix;
+    delete mp3;
+    delete wav;
+}
+
+
+
+
 int main(int argc, char* argv[]) {    
     /**
      * Command-line argument parsing
@@ -187,10 +213,12 @@ int main(int argc, char* argv[]) {
         std::cout << "==================================================" << std::endl;
         
         // Test each phase individually
-        test_phase_1_memory_leaks();
-        test_phase_2_rule_of_5();
-        test_phase_3();
+        // test_phase_1_memory_leaks();
+        // test_phase_2_rule_of_5();
+        // test_phase_3();
         //demonstrate_polymorphism();
+        test_MixingEngineService();
+
         std::cout << "\n(Set 'run_software' to true in main.cpp to run the full interactive session.)\n" << std::endl;
     }
     return 0;

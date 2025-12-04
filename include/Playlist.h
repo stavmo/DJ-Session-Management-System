@@ -40,6 +40,13 @@ public:
      */
     ~Playlist();
 
+    // Copy constuctor
+    Playlist(const Playlist& other);
+
+    //Copy assignment operator
+    Playlist& operator=(const Playlist& other);
+
+
     /**
      * Add a track to the playlist
      * @param track Pointer to AudioTrack to add
@@ -85,6 +92,8 @@ public:
      * Get all tracks as a vector
      */
     std::vector<AudioTrack*> getTracks() const;
+
+    void clear();
 
 };
 

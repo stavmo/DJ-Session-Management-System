@@ -13,7 +13,6 @@ Playlist::~Playlist() {
     std::cout << "Destroying playlist: " << playlist_name << std::endl;
     #endif
 
-
     //!!!!!! ADDED HERE
     PlaylistNode* current = head;
     while(current){
@@ -23,6 +22,31 @@ Playlist::~Playlist() {
         current = next;
     }
 }
+
+Playlist::Playlist(const Playlist& other) 
+    : head(nullptr), playlist_name(other.playlist_name), track_count(0) {
+    std::vector<AudioTrack*> tracks = other.getTracks();
+    for (AudioTrack* track : tracks) {
+        add_track(track);
+    }
+}
+
+//Copy assignment operator
+Playlist& Playlist::operator=(const Playlist& other) {
+    if (this == &other) {
+        return *this;
+    }
+    
+    clear();
+
+    playlist_name = other.get_name();
+    std::vector<AudioTrack*> tracks = other.getTracks();
+    for (AudioTrack* track : tracks) {
+        add_track(track);
+    }
+    return *this;
+}
+
 
 void Playlist::add_track(AudioTrack* track) {
     if (!track) {
@@ -140,3 +164,17 @@ std::vector<AudioTrack*> Playlist::getTracks() const {
     }
     return tracks;
 }
+
+void Playlist::clear() {
+    PlaylistNode* current = head;
+    while(current){
+        PlaylistNode* next = current->next;
+        delete current->track;
+        delete current;
+        current = next;
+    }
+    head = nullptr;
+    track_count = 0;
+}
+
+

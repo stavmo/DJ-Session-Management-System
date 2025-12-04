@@ -39,28 +39,24 @@ AudioTrack::~AudioTrack() {
     
 }
 
-AudioTrack::AudioTrack(const AudioTrack& other)
+AudioTrack::AudioTrack(const AudioTrack& other) : 
+    title(other.title),
+    artists(other.artists),
+    duration_seconds(other.duration_seconds),
+    bpm(other.bpm),
+    waveform_data(nullptr),
+    waveform_size(other.waveform_size)
 {
     // TODO: Implement the copy constructor
     #ifdef DEBUG
     std::cout << "AudioTrack copy constructor called for: " << other.title << std::endl;
     #endif
 
-    title = other.title;
-    artists = other.artists;
-    duration_seconds = other.duration_seconds;
-    bpm = other.bpm;
-    waveform_size = other.waveform_size;
     if(other.waveform_data) {
-        waveform_data = new double[waveform_size];
-
         //deep copy the waveform_data array
+        waveform_data = new double[waveform_size];
         other.get_waveform_copy(waveform_data, waveform_size);
-
-    }     else{
-        waveform_data = nullptr;
     }
-
 }
 
 AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
@@ -68,13 +64,15 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     #ifdef DEBUG
     std::cout << "AudioTrack copy assignment called for: " << other.title << std::endl;
     #endif
+
+    //check for self-assignment
+    if (this == &other) { 
+        return *this;
+    }
     
-    if (this != &other) {   //check for self-assignment
-        
     //clean-up existing data
     delete[] waveform_data;
     waveform_data = nullptr;
-    
 
     //copy all fields
     title = other.title;
@@ -90,7 +88,6 @@ AudioTrack& AudioTrack::operator=(const AudioTrack& other) {
     
     } 
     return *this;
-    }
 }
 
 AudioTrack::AudioTrack(AudioTrack&& other) noexcept 

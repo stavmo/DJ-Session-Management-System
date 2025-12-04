@@ -36,6 +36,8 @@ public:
 
     // ========== RULE OF 5 - STUDENTS MUST IMPLEMENT ALL OF THESE ==========
 
+    
+
     /**
      * TODO: Implement destructor
      * HINT: Don't forget to clean up waveform_data!
