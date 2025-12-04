@@ -28,6 +28,36 @@ MixingEngineService::~MixingEngineService() {
     decks[1] = nullptr;
 }
 
+MixingEngineService::MixingEngineService(const MixingEngineService& other):
+    decks{nullptr,nullptr},
+    active_deck(other.active_deck),
+    auto_sync(other.auto_sync),
+    bpm_tolerance(other.bpm_tolerance) {
+
+    for(int i = 0; i < 2; i++) {
+        if (other.decks[i]) {
+            decks[i] = other.decks[i]->clone().release();
+        }
+    }
+}
+
+MixingEngineService& MixingEngineService::operator=(const MixingEngineService& other) {
+    if (this == &other) {
+        return *this;
+    }
+    for (int i =0; i < 2; i++) {
+        delete decks[i];
+        decks[i] = nullptr;
+        if (other.decks[i]) {
+             decks[i] = other.decks[i]->clone().release();
+        }
+    }
+    active_deck = other.active_deck;
+    auto_sync = other.auto_sync;
+    bpm_tolerance = other.bpm_tolerance;
+    return *this;
+}
+
 
 /**
  * TODO: Implement loadTrackToDeck method
@@ -45,9 +75,10 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
 
     std::cout <<  "\n=== Loading Track to Deck ===" << std::endl;
 
-    //Subsequent Tracks
     size_t target = 1 - active_deck;
     std::cout << "[Deck Switch] Target deck:" << target << std::endl;
+    
+    //clear-up deck
     if (decks[target]) {
         delete decks[target];
         decks[target] = nullptr;
@@ -64,12 +95,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     }
 
     //instant transition
-    decks[target] = copy.release();
-    if (decks[active_deck]) {
-        std::cout << "[Unload] Unloading previous deck " << active_deck  << " (" << decks[active_deck]->get_title() << " )" << std::endl;
-        delete decks[active_deck];
-        decks[active_deck] = nullptr;
-    }   
+    decks[target] = copy.release();  
     active_deck = target;
     std::cout << "[Active Deck] Switched to deck " << target << std::endl;
         
