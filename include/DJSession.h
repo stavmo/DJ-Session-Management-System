@@ -121,4 +121,6 @@ private:
      * @brief Print final session summary with statistics
      */
     void print_session_summary() const;
+
+    void reset_stats();
 };
