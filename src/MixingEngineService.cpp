@@ -13,7 +13,7 @@ MixingEngineService::MixingEngineService()
 
 MixingEngineService::~MixingEngineService() {
 
-    std::cout << "[MixingEngineService] Cleaning up decks.... " << std::endl;
+    std::cout << "[MixingEngineService] Cleaning up decks..." << std::endl;
     
     delete decks[0];
     decks[0] = nullptr;
@@ -66,7 +66,7 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     std::cout <<  "\n=== Loading Track to Deck ===" << std::endl;
 
     size_t target = 1 - active_deck;
-    std::cout << "[Deck Switch] Target deck:" << target << std::endl;
+    std::cout << "[Deck Switch] Target deck: " << target << std::endl;
     
     //clear-up deck
     if (decks[target]) {

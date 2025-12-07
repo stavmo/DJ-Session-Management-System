@@ -66,6 +66,7 @@ bool SessionFileParser::parse_config_file(const std::string& config_path, Sessio
                 std::string playlist_name;
                 std::vector<int> track_indices;
                 if (parse_playlist_line(line, playlist_name, track_indices)) {
+
                     config.playlists[playlist_name] = track_indices;
                 } else {
                     std::cout << "[WARNING] Unknown config key '" << key << "' at line " << line_number << std::endl;
