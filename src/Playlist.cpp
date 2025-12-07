@@ -6,14 +6,11 @@ Playlist::Playlist(const std::string& name)
     : head(nullptr), playlist_name(name), track_count(0) {
     std::cout << "Created playlist: " << name << std::endl;
 }
-// TODO: Fix memory leaks!
-// Students must fix this in Phase 1
+
 Playlist::~Playlist() {
     #ifdef DEBUG
     std::cout << "Destroying playlist: " << playlist_name << std::endl;
     #endif
-
-    //!!!!!! ADDED HERE
     PlaylistNode* current = head;
     while(current){
         PlaylistNode* next = current->next;
@@ -33,12 +30,15 @@ Playlist::Playlist(const Playlist& other)
 
 //Copy assignment operator
 Playlist& Playlist::operator=(const Playlist& other) {
+    //chech for self-assignment.
     if (this == &other) {
         return *this;
     }
     
+    //free all memory from this.
     clear();
 
+    //copy all fields.
     playlist_name = other.get_name();
     std::vector<AudioTrack*> tracks = other.getTracks();
     for (AudioTrack* track : tracks) {
@@ -83,8 +83,8 @@ void Playlist::remove_track(const std::string& title) {
         } else {
             head = current->next;
         }
-
-        //!!!!!! ADDED HERE
+        
+        //free-up memory
         delete current->track;
         delete current;
 
@@ -165,6 +165,7 @@ std::vector<AudioTrack*> Playlist::getTracks() const {
     return tracks;
 }
 
+//clear up playlist leaving this in a valid state.
 void Playlist::clear() {
     PlaylistNode* current = head;
     while(current){

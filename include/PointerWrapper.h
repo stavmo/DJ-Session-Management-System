@@ -39,10 +39,8 @@ public:
      * Is the default destructor sufficient here?
      */
     ~PointerWrapper() {
-        //!!!!!! ADDED HERE
-            delete ptr;
+        delete ptr;
     }
-    //=default;
 
     // ========== COPY OPERATIONS (DELETED) ==========
 
@@ -66,7 +64,6 @@ public:
      * What should happen to the source wrapper after the move?
      */
     PointerWrapper(PointerWrapper&& other) noexcept 
-    //!!!!!! ADDED HERE 
     :ptr(other.ptr)
     {
         other.ptr = nullptr;
@@ -79,7 +76,6 @@ public:
      */
     PointerWrapper& operator=(PointerWrapper&& other) noexcept {
        
-       //!!!!!! ADDED HERE
         if(this != &other){
                 delete ptr;
 
@@ -152,11 +148,10 @@ public:
      */
     void reset(T* new_ptr = nullptr) {
 
-        //!!!!!! ADDED HERE
-        if (ptr != new_ptr) {
+    if (ptr != new_ptr) {
             delete ptr;
             ptr = new_ptr;
-        }
+    }
     }
 
     // ========== UTILITY FUNCTIONS ==========
@@ -198,10 +193,6 @@ PointerWrapper<T> make_pointer_wrapper(Args&&... args) {
  */
 template<typename T>
 void swap(PointerWrapper<T>& lhs, PointerWrapper<T>& rhs) noexcept {
-    // TODO: Implement global swap function
-    // HINT: You can use the member swap function
-    
-    //!!!!!! ADDED HERE
     lhs.swap(rhs);
 }
 

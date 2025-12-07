@@ -14,13 +14,11 @@ DJLibraryService::DJLibraryService(const Playlist& playlist)
  * @param library_tracks Vector of track info from config
  */
 void DJLibraryService::buildLibrary(const std::vector<SessionConfig::TrackInfo>& library_tracks) {
-    //Todo: Implement buildLibrary method
     std::cout << "TODO: Implement DJLibraryService::buildLibrary method\n"<< library_tracks.size() << " tracks to be loaded into library.\n";
     int count = 0;
     
     for(const SessionConfig::TrackInfo& track_info : library_tracks){
 
-        ///ADDED HERE!!!!
         AudioTrack* t = nullptr;
         if(track_info.type == "MP3"){
             t = new MP3Track(
@@ -70,38 +68,24 @@ void DJLibraryService::displayLibrary() const {
 }
 
 /**
- * @brief Get a reference to the current playlist
- * 
+ * @brief Get a reference to the current playlis
  * @return Playlist& 
  */
 Playlist& DJLibraryService::getPlaylist() {
-    // Your implementation here
     return playlist;
 }
 
 /**
  * TODO: Implement findTrack method
- * 
  * HINT: Leverage Playlist's find_track method
  */
 AudioTrack* DJLibraryService::findTrack(const std::string& track_title) {
-    // Your implementation here
-    //return nullptr; // Placeholder
-
-
-    ////ADDED HERE!!!!!
     return playlist.find_track(track_title);
 
 }
 
 void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name, 
                                                const std::vector<int>& track_indices) {
-    // Your implementation here
-    // For now, add a placeholder to fix the linker error
-    //(void)playlist_name;  // Suppress unused parameter warning
-    //(void)track_indices;  // Suppress unused parameter warning
-
-    ///ADDED HERE!!!!
     std::cout << "[INFO] Loading playlist: " << playlist_name << std::endl;
     
     playlist = Playlist(playlist_name);
@@ -125,7 +109,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
                 clonedRawPtr->analyze_beatgrid();
 
                 playlist.add_track(clonedRawPtr);
-                std::cout << "Added " << track->get_title() << " to playlist " << playlist_name << std::endl;
                 count++;
             }
         }
@@ -139,11 +122,6 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
  * @return Vector of track titles in the playlist
  */
 std::vector<std::string> DJLibraryService::getTrackTitles() const {
-    
-    //return std::vector<std::string>(); // Placeholder
-
-
-    ////ADDED HERE!!!!
     std::vector<std::string> titles;
 
     std::vector<AudioTrack*> tracks = playlist.getTracks();
@@ -159,7 +137,6 @@ std::vector<std::string> DJLibraryService::getTrackTitles() const {
 }
 
 
-/// ADDED HERE!!!! (NOT SURE)
 DJLibraryService::~DJLibraryService() {
     for (AudioTrack* track : library) {
         delete track;

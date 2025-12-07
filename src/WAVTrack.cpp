@@ -8,13 +8,7 @@ WAVTrack::WAVTrack(const std::string& title, const std::vector<std::string>& art
     std::cout << "WAVTrack created: " << sample_rate << "Hz/" << bit_depth << "bit" << std::endl;
 }
 
-// ========== TODO: STUDENTS IMPLEMENT THESE VIRTUAL FUNCTIONS ==========
-
 void WAVTrack::load() {
-    // TODO: Implement realistic WAV loading simulation
-    // NOTE: Use exactly 2 spaces before the arrow (→) character
-
-    //!!!!!! ADDED HERE
     std::cout << "[WAVTrack::load] Loading WAV: " << title << "at" 
     << sample_rate << "Hz/" << bit_depth << "bit (uncompressed)..." << std::endl;
 
@@ -25,51 +19,38 @@ void WAVTrack::load() {
 }
 
 void WAVTrack::analyze_beatgrid() {
+    //Print analysis message with track title
     std::cout << "[WAVTrack::analyze_beatgrid] Analyzing beat grid for: \"" << title << "\"\n";
-    // TODO: Implement WAV-specific beat detection analysis
-    // Requirements:
-    // 1. Print analysis message with track title
-    // 2. Calculate beats: (duration_seconds / 60.0) * bpm
-    // 3. Print number of beats and mention uncompressed precision
-    // should print "  → Estimated beats: <beats>  → Precision factor: 1.0 (uncompressed audio)"
 
-    //!!!!!! ADDED HERE
+    //Calculate beats: (duration_seconds / 60.0) * bpm
     int beats_estimated = (duration_seconds / 60.0) * bpm;
+
+    //Print number of beats and mention uncompressed precision
     std::cout <<"  → Estimated beats: "<< beats_estimated << "  → Precision factor: 1 (uncompressed audio)" << std::endl;
 }
 
 double WAVTrack::get_quality_score() const {
-    // TODO: Implement WAV quality scoring
-    // NOTE: Use exactly 2 spaces before each arrow (→) character
-    // NOTE: Cast beats to integer when printing
-    //return 0.0; // Replace with your implementation
-
-    //!!!!!! ADDED HERE
     double score = 70;
-    if(sample_rate >= 44100){
+    if(sample_rate >= 44100) {
         score += 10;
     }
-    if(sample_rate >= 96000){
+    if(sample_rate >= 96000) {
         score += 5;
     }
-    if(bit_depth >= 16){
+    if(bit_depth >= 16) {
         score += 10;
     }
-    if(bit_depth >= 24){
+    if(bit_depth >= 24) {
         score += 5;
     }
 
-    if(score > 100){
+    if(score > 100) {
         return 100.00;
     }
 
     return score;
-
 }
 
 PointerWrapper<AudioTrack> WAVTrack::clone() const {
-    // TODO: Implement the clone method
-
-    //!!!!!! ADDED HERE
     return PointerWrapper<AudioTrack>(new WAVTrack(*this));
 }

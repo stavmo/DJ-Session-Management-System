@@ -7,7 +7,6 @@
 
 // ========== CONSTRUCTORS & RULE OF 5 ==========
 
-
 DJSession::DJSession(const std::string& name, bool play_all)
     : session_name(name),  library_service(),
 
@@ -100,14 +99,12 @@ int DJSession::load_track_to_controller(const std::string& track_name) {
 }
 
 /**
- * TODO: Implement load_track_to_mixer_deck method
- * 
  * @param track_title: Title of track to load to mixer
  * @return: Whether track was successfully loaded to a deck
  */
 bool DJSession::load_track_to_mixer_deck(const std::string& track_title) {
     std::cout << "[System] Delegating track transfer to MixingEngineService for: " << track_title << std::endl;
-    // your implementation here
+
     AudioTrack* track = controller_service.getTrackFromCache(track_title);
     if (!track) {
         std::cout << "[ERROR] Track: \"" << track_title << "\" not found in cache" << std::endl;
@@ -159,7 +156,6 @@ void DJSession::simulate_dj_performance() {
     std::cout << "\n--- Processing Tracks ---" << std::endl;
 
     std::cout << "TODO: Implement the DJ performance simulation workflow here." << std::endl;
-    // Your implementation here
 
     if (play_all) {
         std::vector<std::string> playlists_names;
@@ -179,7 +175,6 @@ void DJSession::simulate_dj_performance() {
                     load_track_to_mixer_deck(track_title);
                 }
                 print_session_summary();
-                // reset_stats();
             }
         }
     } 
@@ -197,7 +192,6 @@ void DJSession::simulate_dj_performance() {
                     load_track_to_mixer_deck(track_title);
                 }
                 print_session_summary();
-                // reset_stats();
             }
             playlist_name = display_playlist_menu_from_config();
         }   
@@ -292,15 +286,4 @@ void DJSession::print_session_summary() const {
     std::cout << "Transitions: " << stats.transitions << std::endl;
     std::cout << "Errors: " << stats.errors << std::endl;
     std::cout << "=== Session Complete ===" << std::endl;
-}
-
-void DJSession::reset_stats() {
-        stats.tracks_processed = 0;
-        stats.cache_hits = 0;
-        stats.cache_misses = 0;
-        stats.cache_evictions = 0;
-        stats.deck_loads_a = 0;
-        stats.deck_loads_b = 0;
-        stats.transitions = 0;
-        stats.errors = 0;
 }
