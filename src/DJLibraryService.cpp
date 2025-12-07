@@ -108,10 +108,10 @@ void DJLibraryService::loadPlaylistFromIndices(const std::string& playlist_name,
     int count=0;
 
     for(int index : track_indices){
-        if(index < 1 || index > library.size()){
+        if(index < 1 || static_cast<size_t>(index) > library.size()){
             std::cout << "[WARNING] Invalid track index: " << index << std::endl;
         }
-        else{
+        else {
             AudioTrack* track = library[index-1];
             PointerWrapper<AudioTrack> clonedTrack = track->clone();
 
