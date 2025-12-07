@@ -88,7 +88,6 @@ int MixingEngineService::loadTrackToDeck(const AudioTrack& track) {
     decks[target] = copy.release();  
     active_deck = target;
     std::cout << "[Active Deck] Switched to deck " << target << std::endl;
-        
     return target;
     }
 

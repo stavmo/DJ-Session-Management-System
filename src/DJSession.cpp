@@ -52,6 +52,7 @@ bool DJSession::load_playlist(const std::string& playlist_name)  {
     }
     
     track_titles = library_service.getTrackTitles();
+    std::reverse(track_titles.begin(),track_titles.end());
     return true;
 }
 
@@ -95,6 +96,7 @@ int DJSession::load_track_to_controller(const std::string& track_name) {
         stats.cache_misses++;
         stats.cache_evictions++;
     }
+    controller_service.displayCacheStatus();
     return loaded;
 }
 
@@ -123,6 +125,7 @@ bool DJSession::load_track_to_mixer_deck(const std::string& track_title) {
         std::cout << "[ERROR] Couldn't clone track: \"" << track_title << "\" to deck" << std::endl;
         return -1;
     }
+    mixing_service.displayDeckStatus();
     return (loaded == 0 || loaded == 1);
 
 }
@@ -173,6 +176,7 @@ void DJSession::simulate_dj_performance() {
                     stats.tracks_processed++;
                     load_track_to_controller(track_title);
                     load_track_to_mixer_deck(track_title);
+
                 }
                 print_session_summary();
             }
